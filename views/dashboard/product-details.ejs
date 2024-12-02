@@ -1,0 +1,242 @@
+<div class="min-h-screen bg-gray-50 p-6">
+  <!-- Dashboard Header -->
+  <div class="max-w-7xl mx-auto mb-6">
+    <div class="flex items-center justify-between">
+      <div>
+        <h1 class="text-3xl font-bold text-gray-900 tracking-tight"><%= product.name %></h1>
+        <p class="text-gray-500 mt-1">Product Details and Management</p>
+      </div>
+      <a
+        href="/admin/products"
+        class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+      >
+        ← Back to Products
+      </a>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="max-w-7xl mx-auto">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <!-- Product Details Card -->
+      <div class="lg:col-span-2 bg-white rounded-lg shadow-sm border border-gray-200">
+        <div class="p-6">
+          <div class="flex flex-col md:flex-row md:items-start gap-6">
+            <!-- Product Image -->
+            <div class="md:w-1/2">
+              <% if (product.photoUrl) { %>
+              <img
+                src="/uploads/<%= product.photoUrl %>"
+                alt="<%= product.name %>"
+                class="rounded-lg w-full h-auto object-cover aspect-square"
+              />
+              <% } else { %>
+              <div class="h-64 bg-gray-100 rounded-lg flex items-center justify-center">
+                <div class="text-center">
+                  <svg
+                    class="mx-auto h-12 w-12 text-gray-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                    />
+                  </svg>
+                  <span class="mt-2 block text-sm font-medium text-gray-400"
+                    >No Image Available</span
+                  >
+                </div>
+              </div>
+              <% } %>
+            </div>
+
+            <!-- Product Specifications -->
+            <div class="md:w-1/2">
+              <div
+                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-blue-100 text-blue-800 mb-4"
+              >
+                <%= product.type %>
+              </div>
+
+              <!-- Power Toggle Switch -->
+              <% if (product.userProducts[0]?.user) { %>
+              <div class="mb-6">
+                <label for="power-toggle" class="relative inline-flex items-center cursor-pointer">
+                  <input type="checkbox" id="power-toggle" class="sr-only peer" />
+                  <div
+                    class="w-14 h-7 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-primary"
+                  ></div>
+                  <span class="ml-3 text-sm font-medium text-gray-500 peer-checked:text-primary"
+                    >Power</span
+                  >
+                </label>
+                <p class="mt-1 text-xs text-gray-500" id="power-status">Device is currently off</p>
+              </div>
+              <% } %>
+
+              <dl class="grid grid-cols-2 gap-x-4 gap-y-6">
+                <div class="col-span-1">
+                  <dt class="text-sm font-medium text-gray-500">Model</dt>
+                  <dd class="mt-1 text-lg text-gray-900"><%= product.model %></dd>
+                </div>
+                <div class="col-span-1">
+                  <dt class="text-sm font-medium text-gray-500">Quantity</dt>
+                  <dd class="mt-1 text-lg text-gray-900"><%= product.quantity %></dd>
+                </div>
+                <div class="col-span-1">
+                  <dt class="text-sm font-medium text-gray-500">Amp</dt>
+                  <dd class="mt-1 text-lg text-gray-900"><%= product.amp %></dd>
+                </div>
+                <div class="col-span-1">
+                  <dt class="text-sm font-medium text-gray-500">Watt</dt>
+                  <dd class="mt-1 text-lg text-gray-900"><%= product.watt %></dd>
+                </div>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pricing Card -->
+      <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+        <!-- ... rest of the pricing card content remains the same ... -->
+        <div class="p-6">
+          <h3 class="text-lg font-medium text-gray-900 mb-4"><%= product.name %></h3>
+
+          <div class="space-y-4">
+            <% if (product.userProducts[0]?.user) { %>
+            <div
+              class="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-green-100 text-green-800"
+            >
+              Installed
+            </div>
+            <% } %>
+            <div class="flex justify-between items-center">
+              <span class="text-gray-500">Base Price</span>
+              <span class="text-lg font-medium">N<%= product.price %></span>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="text-gray-500">Service Fee</span>
+              <span class="text-lg font-medium">N<%= product.serviceFee %></span>
+            </div>
+            <div class="pt-4 border-t">
+              <div class="flex justify-between items-center">
+                <span class="font-medium">Total</span>
+                <span class="text-xl font-bold">N<%= (product.price + product.serviceFee) %></span>
+              </div>
+            </div>
+
+            <% if (!product.userProducts[0]?.user) { %>
+            <form action="/dashboard/products/<%= product.id %>/install" method="POST" class="mt-6">
+              <button
+                type="submit"
+                class="w-full inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover:bg-primary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#accountModal"
+              >
+                Purchase and Install Product
+              </button>
+            </form>
+
+            <div
+              class="modal fade"
+              id="accountModal"
+              tabindex="-1"
+              aria-labelledby="accountModalLabel"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="accountModalLabel">
+                      Click on the button above to Install and then Send N<%= (product.price +
+                      product.serviceFee) %> To
+                    </h5>
+                    <button
+                      type="button"
+                      class="btn-close"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                    ></button>
+                  </div>
+                  <div class="modal-body">
+                    <p>
+                      Account Name: ECO Power
+                      <br />
+                      Account Number: 1234567890
+                      <br />
+                      Bank Name: GTBank
+                    </p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                      Close
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <% } %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add this script at the end of your file -->
+<script>
+  document.addEventListener("DOMContentLoaded", async function () {
+    const powerToggle = document.getElementById("power-toggle");
+    const powerStatus = document.getElementById("power-status");
+
+    if(<%= product.userProducts[0]?.status %>) {
+      powerToggle.checked = true;
+      powerStatus.textContent = "Device is currently on";
+      powerStatus.classList.remove("text-gray-500");
+      powerStatus.classList.add("text-primary");
+    } else {
+      powerToggle.checked = false;
+      powerStatus.textContent = "Device is currently off";
+      powerStatus.classList.remove("text-primary");
+      powerStatus.classList.add("text-gray-500");
+    }
+
+    powerToggle.addEventListener("change", async function () {
+      try {
+        const response = await fetch(`/dashboard/api/products/<%= product.id %>/toggle`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            status: powerToggle.checked,
+          }),
+        });
+
+        if (response.ok) {
+          if (this.checked) {
+            powerStatus.textContent = "Device is currently on";
+            powerStatus.classList.remove("text-gray-500");
+            powerStatus.classList.add("text-primary");
+          } else {
+            powerStatus.textContent = "Device is currently off";
+            powerStatus.classList.remove("text-primary");
+            powerStatus.classList.add("text-gray-500");
+          }
+          console.log(await response.json());
+          // Refresh the page to show the new device
+          window.location.reload();
+        } else {
+          alert("Failed Toggle Grid");
+        }
+      } catch (error) {
+        alert("Error toggling electrical grid");
+      }
+    });
+  });
+</script>

@@ -1,0 +1,63 @@
+<nav class="fixed w-full bg-white/95 backdrop-blur-sm z-50">
+  <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+    <a href="#" class="text-xl font-bold">ENERGY MANAGEMENT</a>
+    <div class="hidden md:flex space-x-6">
+      <a href="#" class="hover:text-green-600">Home</a>
+      <a href="#about" class="hover:text-green-600">About</a>
+      <a href="#services" class="hover:text-green-600">Services</a>
+      <a href="/products" class="hover:text-green-600">Products</a>
+      <a
+        href="#contact"
+        class="border border-black px-4 py-2 hover:bg-black hover:text-white transition"
+        >CONTACT</a
+      >
+    </div>
+    <button class="md:hidden" id="menuBtn">
+      <i class="fas fa-bars text-2xl"></i>
+    </button>
+  </div>
+  <!-- Mobile Menu -->
+  <div class="hidden bg-white w-full" id="mobileMenu">
+    <div class="container mx-auto px-4 py-4 flex flex-col space-y-4">
+      <a href="#" class="hover:text-green-600">Home</a>
+      <a href="#about" class="hover:text-green-600">About</a>
+      <a href="#services" class="hover:text-green-600">Services</a>
+      <a href="/products" class="hover:text-green-600">Products</a>
+      <a
+        href="#contact"
+        class="border border-black px-4 py-2 text-center hover:bg-black hover:text-white transition"
+        >CONTACT</a
+      >
+    </div>
+  </div>
+</nav>
+
+<script>
+  // Mobile menu toggle
+  const menuBtn = document.getElementById("menuBtn");
+  const mobileMenu = document.getElementById("mobileMenu");
+
+  menuBtn.addEventListener("click", () => {
+    mobileMenu.classList.toggle("hidden");
+  });
+
+  // Form submission
+  const contactForm = document.getElementById("contactForm");
+
+  contactForm.addEventListener("submit", e => {
+    e.preventDefault();
+    // Add your form submission logic here
+    alert("Form submitted successfully!");
+    contactForm.reset();
+  });
+
+  // Smooth scrolling for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener("click", function (e) {
+      e.preventDefault();
+      document.querySelector(this.getAttribute("href")).scrollIntoView({
+        behavior: "smooth",
+      });
+    });
+  });
+</script>

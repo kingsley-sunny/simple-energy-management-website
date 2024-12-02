@@ -1,0 +1,55 @@
+<div class="bg-gray-100 min-h-screen py-8">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center mb-6">
+      <h2 class="text-4xl font-bold text-primary">Installation Requests</h2>
+    </div>
+
+    <div class="overflow-hidden rounded-lg shadow-lg mt-8">
+      <table class="min-w-full bg-white">
+        <thead>
+          <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+            <th class="px-6 py-3 text-left">User</th>
+            <th class="px-6 py-3 text-left">Product</th>
+            <th class="px-6 py-3 text-left">Type</th>
+            <th class="px-6 py-3 text-left">Watt</th>
+            <th class="px-6 py-3 text-left">Amp</th>
+            <th class="px-6 py-3 text-left">Approved</th>
+            <th class="px-6 py-3 text-left">Action</th>
+          </tr>
+        </thead>
+        <tbody class="text-gray-600 text-sm font-medium">
+          <% userProducts.forEach(userProduct => { %>
+          <tr class="border-b hover:bg-gray-100 transition duration-200">
+            <td class="px-6 py-4"><%= userProduct.user.fullName %></td>
+            <td class="px-6 py-4"><%= userProduct.product.name %></td>
+            <td class="px-6 py-4"><%= userProduct.type %></td>
+            <td class="px-6 py-4"><%= userProduct.watt %></td>
+            <td class="px-6 py-4"><%= userProduct.amp %></td>
+            <td class="px-6 py-4"><%= userProduct.approved ? 'Yes' : 'No' %></td>
+            <td class="px-6 py-4 flex space-x-2">
+              <% if (!userProduct.approved) { %>
+              <form action="/admin/installation-requests/approve" method="POST">
+                <input type="hidden" name="userId" value="<%= userProduct.user.id %>" /><input
+                  type="hidden"
+                  name="productId"
+                  ,
+                  value="<%= userProduct.product.id %>"
+                />
+                <button
+                  type="submit"
+                  class="bg-green-500 text-white px-4 py-2 rounded-lg shadow transition duration-300 hover:bg-green-600"
+                >
+                  Approve <%= userProduct.id %>
+                </button>
+              </form>
+              <% } %>
+            </td>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script></script>

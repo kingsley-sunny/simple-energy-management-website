@@ -1,0 +1,345 @@
+<div class="container mx-auto py-8">
+  <div class="flex items-center justify-between mb-6">
+    <h1 class="text-3xl font-bold"><%= userHouse.name %></h1>
+    <button
+      class="bg-primary hover:bg-primary text-white font-bold py-2 px-4 rounded"
+      onclick="showAddDeviceModal()"
+    >
+      Add Device
+    </button>
+  </div>
+
+  <div class="bg-white shadow-md rounded-lg overflow-hidden">
+    <div class="p-6">
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <img
+            src="/uploads/<%= userHouse.photoUrl %>"
+            alt="<%= userHouse.address %>"
+            class="w-full h-48 object-cover rounded-lg"
+          />
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold"><%= userHouse.address %></h2>
+          <p class="text-gray-600 mb-4"><%= userHouse.state %>, <%= userHouse.country %></p>
+          <div class="grid grid-cols-2 gap-2 text-gray-700">
+            <div><strong>Meter No.:</strong> <%= userHouse.meterNo %></div>
+            <div>
+              <strong>Solar Installed:</strong> <%= userHouse.isSolarInstalled ? 'Yes' : 'No' %>
+            </div>
+            <div><strong>Solar Status:</strong> <%= userHouse.isSolarOn ? 'On' : 'Off' %></div>
+            <div><strong>Light Status:</strong> <%= userHouse.isLightOn ? 'On' : 'Off' %></div>
+          </div>
+          <div>
+            <!-- Solar Status Toggle -->
+            <!-- <div class="mb-6">
+              <label for="solar-toggle" class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" id="solar-toggle" class="sr-only peer" <% userHouse.isSolarOn
+                ? 'checked' : '' %> >
+                <div
+                  class="w-14 h-7 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-primary"
+                ></div>
+                <span class="ml-3 text-sm font-medium text-gray-500 peer-checked:text-primary"
+                  >Solar Power</span
+                >
+              </label>
+              <p class="mt-1 text-xs text-gray-500" id="solar-status">
+                Solar power is currently <%= userHouse.isSolarOn ? 'on' : 'off' %>
+              </p>
+            </div> -->
+          </div>
+
+          <script>
+            document.addEventListener("DOMContentLoaded", function () {
+              const solarToggle = document.getElementById("solar-toggle");
+              const solarStatus = document.getElementById("solar-status");
+
+              solarToggle.addEventListener("change", function () {
+                if (this.checked) {
+                  solarStatus.textContent = "Solar power is currently on";
+                  solarStatus.classList.remove("text-gray-500");
+                  solarStatus.classList.add("text-primary");
+                } else {
+                  solarStatus.textContent = "Solar power is currently off";
+                  solarStatus.classList.remove("text-primary");
+                  solarStatus.classList.add("text-gray-500");
+                }
+              });
+            });
+          </script>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-white shadow-md rounded-lg mt-8">
+    <div class="p-6">
+      <h2 class="text-2xl font-bold mb-4">Devices</h2>
+      <table class="w-full border-collapse">
+        <thead>
+          <tr class="bg-gray-200">
+            <th class="px-4 py-2 text-left">Name</th>
+            <th class="px-4 py-2 text-left">Watt</th>
+            <th class="px-4 py-2 text-left">Quantity</th>
+            <th class="px-4 py-2 text-left">Amperage</th>
+            <th class="px-4 py-2 text-left">Status</th>
+            <th class="px-4 py-2 text-left">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% userHouse.houseAppliances.forEach(device => { %>
+          <tr class="border-b">
+            <td class="px-4 py-2"><%= device.name %></td>
+            <td class="px-4 py-2"><%= device.watt %></td>
+            <td class="px-4 py-2"><%= device.quantity %></td>
+            <td class="px-4 py-2"><%= device.amp ? device.amp : 'N/A' %></td>
+            <td class="px-4 py-2"><%= device.status ? 'ON': 'OFF' %></td>
+            <td class="px-4 py-2">
+              <button
+                class="bg-primary hover:bg-primary text-white font-bold py-1 px-2 rounded"
+                onclick="toggleDevice(<%= device.id %>, true)"
+              >
+                ON
+              </button>
+              <button
+                class="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-2 rounded"
+                onclick="toggleDevice(<%= device.id %>, false)"
+              >
+                OFF
+              </button>
+            </td>
+          </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Add Device Modal -->
+<div
+  id="addDeviceModal"
+  class="fixed z-10 inset-0 overflow-y-auto hidden"
+  aria-labelledby="modal-title"
+  role="dialog"
+  aria-modal="true"
+>
+  <div
+    class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0"
+  >
+    <div
+      class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+      aria-hidden="true"
+      onclick="hideAddDeviceModal()"
+    ></div>
+
+    <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true"
+      >&#8203;</span
+    >
+
+    <div
+      class="p-8 rounded-lg w-full inline-block align-bottom bg-white text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
+    >
+      <h2 class="text-3xl font-bold text-center text-primary mb-6">Add Device</h2>
+      <form method="POST" class="space-y-6">
+        <div class="grid lg:grid-cols-2 gap-6">
+          <div>
+            <label for="name" class="block text-sm font-medium text-gray-700">Device Name</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              required
+              class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-primary focus:border-primary"
+            />
+          </div>
+
+          <div>
+            <label for="watt" class="block text-sm font-medium text-gray-700">Watt</label>
+            <input
+              type="number"
+              id="watt"
+              name="watt"
+              required
+              class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-primary focus:border-primary"
+            />
+          </div>
+          <div>
+            <label for="quantity" class="block text-sm font-medium text-gray-700">Quantity</label>
+            <input
+              type="number"
+              id="quantity"
+              name="quantity"
+              required
+              class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-primary focus:border-primary"
+            />
+          </div>
+          <div>
+            <label for="amp" class="block text-sm font-medium text-gray-700">Amp (Optional)</label>
+            <input
+              type="number"
+              id="amp"
+              name="amp"
+              class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-primary focus:border-primary"
+            />
+          </div>
+        </div>
+        <div>
+          <button
+            type="button"
+            class="w-full bg-primary text-white px-4 py-2 rounded-lg shadow-lg font-semibold hover:bg-primary transition duration-300"
+            onclick="addDevice()"
+          >
+            Add Device
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Add this script section at the bottom of your HTML file, before the closing </body> tag -->
+<script>
+  // Function to show the Add Device modal
+  function showAddDeviceModal() {
+    const modal = document.getElementById("addDeviceModal");
+    modal.classList.remove("hidden");
+  }
+
+  // Function to hide the Add Device modal
+  function hideAddDeviceModal() {
+    const modal = document.getElementById("addDeviceModal");
+    modal.classList.add("hidden");
+    // Clear form fields
+    document.getElementById("addDeviceForm").reset();
+  }
+
+  // Function to add a new device
+  async function addDevice() {
+    const name = document.getElementById("name").value;
+    const watt = document.getElementById("watt").value;
+    const quantity = document.getElementById("quantity").value;
+    const amp = document.getElementById("amp").value;
+    const houseId = <%= userHouse.id %>;
+    console.log("🚀 ~~ addDevice ~~ houseId:", houseId);
+
+
+    try {
+      const response = await fetch(`/dashboard/api/houses/${houseId}/add-device`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          watt,
+          quantity,
+          amp,
+        }),
+      });
+
+      if (response.ok) {
+        console.log(await response.json());
+        // Refresh the page to show the new device
+        window.location.reload();
+      } else {
+        alert("Failed to add device");
+      }
+    } catch (error) {
+      console.error("Error adding device:", error);
+      alert("Error adding device");
+    }
+  }
+
+  // Function to delete a device
+  async function deleteDevice(deviceId) {
+    if (confirm("Are you sure you want to delete this device?")) {
+      try {
+        const response = await fetch(`/api/devices/${deviceId}`, {
+          method: "DELETE",
+        });
+
+        if (response.ok) {
+
+          // Refresh the page to update the device list
+          window.location.reload();
+        } else {
+          alert("Failed to delete device");
+        }
+      } catch (error) {
+        console.error("Error deleting device:", error);
+        alert("Error deleting device");
+      }
+    }
+  }
+
+  // Function to edit a device (you can expand this based on your needs)
+  function editDevice(deviceId) {
+    // You can either redirect to an edit page or show an edit modal
+    window.location.href = `/devices/${deviceId}/edit`;
+  }
+
+  // Function to toggle solar status
+  async function toggleDevice(deviceId, status) {
+    const houseId = "<%= userHouse.id %>";
+    try {
+      const response = await fetch(`/dashboard/api/houses/${houseId}/toggle-device`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          status: status,
+          deviceId
+        }),
+      });
+
+      if (response.ok) {
+
+        await response.json()
+        // Refresh the page to show the updated status
+        window.location.reload();
+      } else {
+        const data = await response.json();
+        alert(data.message);
+      }
+    } catch (error) {
+      console.error("Error updating solar status:", error);
+      alert("Error updating solar status");
+    }
+  }
+
+  // Function to toggle light status
+  async function toggleLight(status) {
+    const houseId = "<%= userHouse.id %>";
+    try {
+      const response = await fetch(`/api/houses/${houseId}/light`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          isLightOn: status,
+        }),
+      });
+
+      if (response.ok) {
+        // Refresh the page to show the updated status
+        window.location.reload();
+      } else {
+        alert("Failed to update light status");
+      }
+    } catch (error) {
+      console.error("Error updating light status:", error);
+      alert("Error updating light status");
+    }
+  }
+
+  // Add event listeners for solar radio buttons
+  document.getElementById("solarOn").addEventListener("change", () => toggleDevice(true));
+  document.getElementById("solarOff").addEventListener("change", () => toggleDevice(false));
+
+  // Add event listeners for light radio buttons
+  document.getElementById("lightOn").addEventListener("change", () => toggleLight(true));
+  document.getElementById("lightOff").addEventListener("change", () => toggleLight(false));
+</script>

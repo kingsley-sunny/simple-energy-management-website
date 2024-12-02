@@ -1,0 +1,81 @@
+<div class="flex items-center justify-center min-h-screen bg-gray-100">
+  <div class="p-8 rounded-lg shadow-lg w-full">
+    <h2 class="text-3xl font-bold text-center text-primary mb-6">Edit Product</h2>
+    <form action="#" method="post" enctype="multipart/form-data" class="space-y-6">
+      <div class="grid lg:grid-cols-2 gap-6">
+        <div>
+          <label for="name" class="block text-sm font-medium text-gray-700">Product Name</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            value="<%= product.name %>"
+            required
+            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-primary focus:border-primary"
+          />
+        </div>
+
+        <div>
+          <label for="price" class="block text-sm font-medium text-gray-700">Price</label>
+          <input
+            type="number"
+            id="price"
+            name="price"
+            value="<%= product.price %>"
+            required
+            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-primary focus:border-primary"
+          />
+        </div>
+        <div>
+          <label for="serviceFee" class="block text-sm font-medium text-gray-700"
+            >Service Fee</label
+          >
+          <input
+            type="number"
+            id="serviceFee"
+            name="serviceFee"
+            value="<%= product.serviceFee %>"
+            required
+            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-primary focus:border-primary"
+          />
+        </div>
+        <div>
+          <label for="model" class="block text-sm font-medium text-gray-700">Model</label>
+          <input
+            type="number"
+            id="model"
+            name="model"
+            value="<%= product.model %>"
+            required
+            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-primary focus:border-primary"
+          />
+        </div>
+        <div>
+          <label for="quantity" class="block text-sm font-medium text-gray-700">Quantity</label>
+          <input
+            type="number"
+            id="quantity"
+            name="quantity"
+            value="<%= product.quantity %>"
+            required
+            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-primary focus:border-primary"
+          />
+        </div>
+        <div>
+          <label for="photoUrl" class="block text-sm font-medium text-gray-700"
+            >Product Image</label
+          >
+          <input type="file" id="photoUrl" name="file" class="mt-1 block w-full text-gray-700" />
+        </div>
+      </div>
+      <div>
+        <button
+          type="submit"
+          class="w-full bg-primary text-white px-4 py-2 rounded-lg shadow-lg font-semibold hover:bg-primary transition duration-300"
+        >
+          Update Product
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
